@@ -1,0 +1,1278 @@
+{
+  "format": "notequest-tables",
+  "version": 1,
+  "description": "Modèle vide à remplir avec les tables de votre livret",
+  "tables": {
+    "races": {
+      "titre": "",
+      "de": "2d6",
+      "entrees": [
+        {
+          "jet": 2,
+          "texte": "",
+          "nom": "",
+          "pv": 0
+        },
+        {
+          "jet": 3,
+          "texte": "",
+          "nom": "",
+          "pv": 0
+        },
+        {
+          "jet": 4,
+          "texte": "",
+          "nom": "",
+          "pv": 0
+        },
+        {
+          "jet": 5,
+          "texte": "",
+          "nom": "",
+          "pv": 0
+        },
+        {
+          "jet": 6,
+          "texte": "",
+          "nom": "",
+          "pv": 0
+        },
+        {
+          "jet": 7,
+          "texte": "",
+          "nom": "",
+          "pv": 0
+        },
+        {
+          "jet": 8,
+          "texte": "",
+          "nom": "",
+          "pv": 0
+        },
+        {
+          "jet": 9,
+          "texte": "",
+          "nom": "",
+          "pv": 0
+        },
+        {
+          "jet": 10,
+          "texte": "",
+          "nom": "",
+          "pv": 0
+        },
+        {
+          "jet": 11,
+          "texte": "",
+          "nom": "",
+          "pv": 0
+        },
+        {
+          "jet": 12,
+          "texte": "",
+          "nom": "",
+          "pv": 0
+        }
+      ]
+    },
+    "classes": {
+      "titre": "",
+      "de": "2d6",
+      "entrees": [
+        {
+          "jet": 2,
+          "texte": "",
+          "nom": "",
+          "pv": 0,
+          "arme": ""
+        },
+        {
+          "jet": 3,
+          "texte": "",
+          "nom": "",
+          "pv": 0,
+          "arme": ""
+        },
+        {
+          "jet": 4,
+          "texte": "",
+          "nom": "",
+          "pv": 0,
+          "arme": ""
+        },
+        {
+          "jet": 5,
+          "texte": "",
+          "nom": "",
+          "pv": 0,
+          "arme": ""
+        },
+        {
+          "jet": 6,
+          "texte": "",
+          "nom": "",
+          "pv": 0,
+          "arme": ""
+        },
+        {
+          "jet": 7,
+          "texte": "",
+          "nom": "",
+          "pv": 0,
+          "arme": ""
+        },
+        {
+          "jet": 8,
+          "texte": "",
+          "nom": "",
+          "pv": 0,
+          "arme": ""
+        },
+        {
+          "jet": 9,
+          "texte": "",
+          "nom": "",
+          "pv": 0,
+          "arme": ""
+        },
+        {
+          "jet": 10,
+          "texte": "",
+          "nom": "",
+          "pv": 0,
+          "arme": ""
+        },
+        {
+          "jet": 11,
+          "texte": "",
+          "nom": "",
+          "pv": 0,
+          "arme": ""
+        },
+        {
+          "jet": 12,
+          "texte": "",
+          "nom": "",
+          "pv": 0,
+          "arme": ""
+        }
+      ]
+    },
+    "sorts": {
+      "titre": "",
+      "de": "1d6",
+      "entrees": [
+        {
+          "jet": 1,
+          "texte": "",
+          "nom": ""
+        },
+        {
+          "jet": 2,
+          "texte": "",
+          "nom": ""
+        },
+        {
+          "jet": 3,
+          "texte": "",
+          "nom": ""
+        },
+        {
+          "jet": 4,
+          "texte": "",
+          "nom": ""
+        },
+        {
+          "jet": 5,
+          "texte": "",
+          "nom": ""
+        },
+        {
+          "jet": 6,
+          "texte": "",
+          "nom": ""
+        }
+      ]
+    },
+    "types_donjon": {
+      "titre": "",
+      "de": "1d6",
+      "entrees": [
+        {
+          "jet": 1,
+          "texte": "",
+          "nom": "",
+          "groupe": "groupe_1",
+          "depart": {
+            "genre": "",
+            "portes": 0
+          }
+        },
+        {
+          "jet": 2,
+          "texte": "",
+          "nom": "",
+          "groupe": "groupe_2",
+          "depart": {
+            "genre": "",
+            "portes": 0
+          }
+        },
+        {
+          "jet": 3,
+          "texte": "",
+          "nom": "",
+          "groupe": "groupe_3",
+          "depart": {
+            "genre": "",
+            "portes": 0
+          }
+        },
+        {
+          "jet": 4,
+          "texte": "",
+          "nom": "",
+          "groupe": "groupe_1",
+          "depart": {
+            "genre": "",
+            "largeur": 0,
+            "longueur": 0,
+            "portes": 0,
+            "fond": false
+          }
+        },
+        {
+          "jet": 5,
+          "texte": "",
+          "nom": "",
+          "groupe": "groupe_2",
+          "depart": {
+            "genre": "",
+            "largeur": 0,
+            "longueur": 0,
+            "portes": 0,
+            "fond": false
+          }
+        },
+        {
+          "jet": 6,
+          "texte": "",
+          "nom": "",
+          "groupe": "groupe_3",
+          "depart": {
+            "genre": "",
+            "largeur": 0,
+            "longueur": 0,
+            "portes": 0,
+            "fond": false,
+            "suite": {
+              "genre": "",
+              "portes": 0
+            }
+          }
+        }
+      ]
+    },
+    "boss": {
+      "titre": "",
+      "de": "1d6",
+      "colonnes": {
+        "groupe_1": {
+          "titre": "",
+          "entrees": [
+            {
+              "jet": 1,
+              "texte": "",
+              "nom": "",
+              "pv": 0,
+              "degats": 0,
+              "capacites": ""
+            },
+            {
+              "jet": 2,
+              "texte": "",
+              "nom": "",
+              "pv": 0,
+              "degats": 0,
+              "capacites": ""
+            },
+            {
+              "jet": 3,
+              "texte": "",
+              "nom": "",
+              "pv": 0,
+              "degats": 0,
+              "capacites": ""
+            },
+            {
+              "jet": 4,
+              "texte": "",
+              "nom": "",
+              "pv": 0,
+              "degats": 0,
+              "capacites": ""
+            },
+            {
+              "jet": 5,
+              "texte": "",
+              "nom": "",
+              "pv": 0,
+              "degats": 0,
+              "capacites": ""
+            },
+            {
+              "jet": 6,
+              "texte": "",
+              "nom": "",
+              "pv": 0,
+              "degats": 0,
+              "capacites": ""
+            }
+          ]
+        },
+        "groupe_2": {
+          "titre": "",
+          "entrees": [
+            {
+              "jet": 1,
+              "texte": "",
+              "nom": "",
+              "pv": 0,
+              "degats": 0,
+              "capacites": ""
+            },
+            {
+              "jet": 2,
+              "texte": "",
+              "nom": "",
+              "pv": 0,
+              "degats": 0,
+              "capacites": ""
+            },
+            {
+              "jet": 3,
+              "texte": "",
+              "nom": "",
+              "pv": 0,
+              "degats": 0,
+              "capacites": ""
+            },
+            {
+              "jet": 4,
+              "texte": "",
+              "nom": "",
+              "pv": 0,
+              "degats": 0,
+              "capacites": ""
+            },
+            {
+              "jet": 5,
+              "texte": "",
+              "nom": "",
+              "pv": 0,
+              "degats": 0,
+              "capacites": ""
+            },
+            {
+              "jet": 6,
+              "texte": "",
+              "nom": "",
+              "pv": 0,
+              "degats": 0,
+              "capacites": ""
+            }
+          ]
+        },
+        "groupe_3": {
+          "titre": "",
+          "entrees": [
+            {
+              "jet": 1,
+              "texte": "",
+              "nom": "",
+              "pv": 0,
+              "degats": 0,
+              "capacites": ""
+            },
+            {
+              "jet": 2,
+              "texte": "",
+              "nom": "",
+              "pv": 0,
+              "degats": 0,
+              "capacites": ""
+            },
+            {
+              "jet": 3,
+              "texte": "",
+              "nom": "",
+              "pv": 0,
+              "degats": 0,
+              "capacites": ""
+            },
+            {
+              "jet": 4,
+              "texte": "",
+              "nom": "",
+              "pv": 0,
+              "degats": 0,
+              "capacites": ""
+            },
+            {
+              "jet": 5,
+              "texte": "",
+              "nom": "",
+              "pv": 0,
+              "degats": 0,
+              "capacites": ""
+            },
+            {
+              "jet": 6,
+              "texte": "",
+              "nom": "",
+              "pv": 0,
+              "degats": 0,
+              "capacites": ""
+            }
+          ]
+        }
+      }
+    },
+    "segments": {
+      "titre": "",
+      "de": "1d6",
+      "colonnes": {
+        "escalier": {
+          "titre": "",
+          "entrees": [
+            {
+              "jet": 1,
+              "texte": "",
+              "segment": {
+                "genre": "",
+                "portes": 0,
+                "secret": false
+              }
+            },
+            {
+              "jet": 2,
+              "texte": "",
+              "segment": {
+                "genre": "",
+                "portes": 0,
+                "secret": false
+              }
+            },
+            {
+              "jet": 3,
+              "texte": "",
+              "segment": {
+                "genre": "",
+                "portes": 0
+              }
+            },
+            {
+              "jet": 4,
+              "texte": "",
+              "segment": {
+                "genre": "",
+                "portes": 0
+              }
+            },
+            {
+              "jet": 5,
+              "texte": "",
+              "segment": {
+                "genre": "",
+                "portes": 0
+              }
+            },
+            {
+              "jet": 6,
+              "texte": "",
+              "segment": {
+                "genre": "",
+                "grand": false,
+                "portes": 0
+              }
+            }
+          ]
+        },
+        "couloir": {
+          "titre": "",
+          "entrees": [
+            {
+              "jet": 1,
+              "texte": "",
+              "segment": {
+                "genre": "",
+                "largeur": 0,
+                "longueur": 0,
+                "portes": 0,
+                "secret": false
+              }
+            },
+            {
+              "jet": 2,
+              "texte": "",
+              "segment": {
+                "genre": "",
+                "largeur": 0,
+                "longueur": 0,
+                "portes": 0
+              }
+            },
+            {
+              "jet": 3,
+              "texte": "",
+              "segment": {
+                "genre": "",
+                "largeur": 0,
+                "longueur": 0,
+                "portes": 0,
+                "secret": false
+              }
+            },
+            {
+              "jet": 4,
+              "texte": "",
+              "segment": {
+                "genre": "",
+                "largeur": 0,
+                "longueur": 0,
+                "portes": 0
+              }
+            },
+            {
+              "jet": 5,
+              "texte": "",
+              "segment": {
+                "genre": "",
+                "largeur": 0,
+                "longueur": 0,
+                "portes": 0
+              }
+            },
+            {
+              "jet": 6,
+              "texte": "",
+              "segment": {
+                "genre": "",
+                "portes": 0
+              }
+            }
+          ]
+        },
+        "piece": {
+          "titre": "",
+          "entrees": [
+            {
+              "jet": 1,
+              "texte": "",
+              "segment": {
+                "genre": "",
+                "largeur": 0,
+                "longueur": 0,
+                "portes": 0,
+                "piege": false
+              }
+            },
+            {
+              "jet": 2,
+              "texte": "",
+              "segment": {
+                "genre": "",
+                "largeur": 0,
+                "longueur": 0,
+                "portes": 0,
+                "piege": false
+              }
+            },
+            {
+              "jet": 3,
+              "texte": "",
+              "segment": {
+                "genre": "",
+                "largeur": 0,
+                "longueur": 0,
+                "portes": 0
+              }
+            },
+            {
+              "jet": 4,
+              "texte": "",
+              "segment": {
+                "genre": "",
+                "largeur": 0,
+                "longueur": 0,
+                "portes": 0,
+                "secret": false
+              }
+            },
+            {
+              "jet": 5,
+              "texte": "",
+              "segment": {
+                "genre": "",
+                "largeur": 0,
+                "longueur": 0,
+                "portes": 0,
+                "secret": false,
+                "piliers": false
+              }
+            },
+            {
+              "jet": 6,
+              "texte": "",
+              "segment": {
+                "genre": "",
+                "portes": 0
+              }
+            }
+          ]
+        }
+      }
+    },
+    "contenu": {
+      "titre": "",
+      "de": "2d6",
+      "colonnes": {
+        "groupe_1": {
+          "titre": "",
+          "entrees": [
+            {
+              "jet": 2,
+              "texte": ""
+            },
+            {
+              "jet": 3,
+              "texte": ""
+            },
+            {
+              "jet": 4,
+              "texte": ""
+            },
+            {
+              "jet": 5,
+              "texte": ""
+            },
+            {
+              "jet": 6,
+              "texte": ""
+            },
+            {
+              "jet": 7,
+              "texte": ""
+            },
+            {
+              "jet": 8,
+              "texte": ""
+            },
+            {
+              "jet": 9,
+              "texte": ""
+            },
+            {
+              "jet": 10,
+              "texte": ""
+            },
+            {
+              "jet": "11-12",
+              "texte": ""
+            }
+          ]
+        },
+        "groupe_2": {
+          "titre": "",
+          "entrees": [
+            {
+              "jet": 2,
+              "texte": ""
+            },
+            {
+              "jet": 3,
+              "texte": ""
+            },
+            {
+              "jet": 4,
+              "texte": ""
+            },
+            {
+              "jet": 5,
+              "texte": ""
+            },
+            {
+              "jet": 6,
+              "texte": ""
+            },
+            {
+              "jet": 7,
+              "texte": ""
+            },
+            {
+              "jet": 8,
+              "texte": ""
+            },
+            {
+              "jet": 9,
+              "texte": ""
+            },
+            {
+              "jet": 10,
+              "texte": ""
+            },
+            {
+              "jet": "11-12",
+              "texte": ""
+            }
+          ]
+        },
+        "groupe_3": {
+          "titre": "",
+          "entrees": [
+            {
+              "jet": 2,
+              "texte": ""
+            },
+            {
+              "jet": 3,
+              "texte": ""
+            },
+            {
+              "jet": 4,
+              "texte": ""
+            },
+            {
+              "jet": 5,
+              "texte": ""
+            },
+            {
+              "jet": 6,
+              "texte": ""
+            },
+            {
+              "jet": 7,
+              "texte": ""
+            },
+            {
+              "jet": 8,
+              "texte": ""
+            },
+            {
+              "jet": 9,
+              "texte": ""
+            },
+            {
+              "jet": 10,
+              "texte": ""
+            },
+            {
+              "jet": "11-12",
+              "texte": ""
+            }
+          ]
+        }
+      }
+    },
+    "monstres": {
+      "titre": "",
+      "de": "2d6",
+      "colonnes": {
+        "groupe_1": {
+          "titre": "",
+          "entrees": [
+            {
+              "jet": 2,
+              "texte": "",
+              "monstres": []
+            },
+            {
+              "jet": 3,
+              "texte": "",
+              "monstres": []
+            },
+            {
+              "jet": 4,
+              "texte": "",
+              "monstres": []
+            },
+            {
+              "jet": 5,
+              "texte": "",
+              "monstres": []
+            },
+            {
+              "jet": 6,
+              "texte": "",
+              "monstres": []
+            },
+            {
+              "jet": 7,
+              "texte": "",
+              "aucun": false
+            },
+            {
+              "jet": 8,
+              "texte": "",
+              "aucun": false
+            },
+            {
+              "jet": 9,
+              "texte": "",
+              "monstres": []
+            },
+            {
+              "jet": 10,
+              "texte": "",
+              "monstres": []
+            },
+            {
+              "jet": 11,
+              "texte": "",
+              "monstres": []
+            },
+            {
+              "jet": 12,
+              "texte": "",
+              "monstres": []
+            }
+          ]
+        },
+        "groupe_2": {
+          "titre": "",
+          "entrees": [
+            {
+              "jet": 2,
+              "texte": "",
+              "monstres": []
+            },
+            {
+              "jet": 3,
+              "texte": "",
+              "monstres": []
+            },
+            {
+              "jet": 4,
+              "texte": "",
+              "monstres": []
+            },
+            {
+              "jet": 5,
+              "texte": "",
+              "monstres": []
+            },
+            {
+              "jet": 6,
+              "texte": "",
+              "monstres": []
+            },
+            {
+              "jet": 7,
+              "texte": "",
+              "aucun": false
+            },
+            {
+              "jet": 8,
+              "texte": "",
+              "aucun": false
+            },
+            {
+              "jet": 9,
+              "texte": "",
+              "monstres": []
+            },
+            {
+              "jet": 10,
+              "texte": "",
+              "monstres": []
+            },
+            {
+              "jet": 11,
+              "texte": "",
+              "monstres": []
+            },
+            {
+              "jet": 12,
+              "texte": "",
+              "monstres": []
+            }
+          ]
+        },
+        "groupe_3": {
+          "titre": "",
+          "entrees": [
+            {
+              "jet": 2,
+              "texte": "",
+              "monstres": []
+            },
+            {
+              "jet": 3,
+              "texte": "",
+              "monstres": []
+            },
+            {
+              "jet": 4,
+              "texte": "",
+              "monstres": []
+            },
+            {
+              "jet": 5,
+              "texte": "",
+              "monstres": []
+            },
+            {
+              "jet": 6,
+              "texte": "",
+              "monstres": []
+            },
+            {
+              "jet": 7,
+              "texte": "",
+              "aucun": false
+            },
+            {
+              "jet": 8,
+              "texte": "",
+              "aucun": false
+            },
+            {
+              "jet": 9,
+              "texte": "",
+              "monstres": []
+            },
+            {
+              "jet": 10,
+              "texte": "",
+              "monstres": []
+            },
+            {
+              "jet": 11,
+              "texte": "",
+              "monstres": []
+            },
+            {
+              "jet": 12,
+              "texte": "",
+              "monstres": []
+            }
+          ]
+        }
+      }
+    },
+    "porte": {
+      "titre": "",
+      "de": "1d6",
+      "entrees": [
+        {
+          "jet": 1,
+          "texte": "",
+          "fermee": false
+        },
+        {
+          "jet": 2,
+          "texte": "",
+          "fermee": false
+        },
+        {
+          "jet": 3,
+          "texte": "",
+          "piege": false
+        },
+        {
+          "jet": 4,
+          "texte": ""
+        },
+        {
+          "jet": 5,
+          "texte": ""
+        },
+        {
+          "jet": 6,
+          "texte": ""
+        }
+      ]
+    },
+    "piege": {
+      "titre": "",
+      "de": "1d6",
+      "entrees": [
+        {
+          "jet": 1,
+          "texte": ""
+        },
+        {
+          "jet": 2,
+          "texte": ""
+        },
+        {
+          "jet": 3,
+          "texte": ""
+        },
+        {
+          "jet": 4,
+          "texte": ""
+        },
+        {
+          "jet": 5,
+          "texte": ""
+        },
+        {
+          "jet": 6,
+          "texte": ""
+        }
+      ]
+    },
+    "coffre": {
+      "titre": "",
+      "de": "1d6",
+      "entrees": [
+        {
+          "jet": 1,
+          "texte": "",
+          "piege": false
+        },
+        {
+          "jet": 2,
+          "texte": ""
+        },
+        {
+          "jet": 3,
+          "texte": ""
+        },
+        {
+          "jet": 4,
+          "texte": ""
+        },
+        {
+          "jet": 5,
+          "texte": ""
+        },
+        {
+          "jet": 6,
+          "texte": ""
+        }
+      ]
+    },
+    "passage_secret": {
+      "titre": "",
+      "de": "1d6",
+      "entrees": [
+        {
+          "jet": 1,
+          "texte": "",
+          "piege": false
+        },
+        {
+          "jet": 2,
+          "texte": ""
+        },
+        {
+          "jet": 3,
+          "texte": ""
+        },
+        {
+          "jet": 4,
+          "texte": ""
+        },
+        {
+          "jet": 5,
+          "texte": ""
+        },
+        {
+          "jet": 6,
+          "texte": "",
+          "segment": {
+            "genre": "",
+            "portes": 0
+          }
+        }
+      ]
+    },
+    "tresor": {
+      "titre": "",
+      "de": "1d6",
+      "entrees": [
+        {
+          "jet": 1,
+          "texte": "",
+          "nom": ""
+        },
+        {
+          "jet": 2,
+          "texte": "",
+          "nom": ""
+        },
+        {
+          "jet": 3,
+          "texte": ""
+        },
+        {
+          "jet": 4,
+          "texte": ""
+        },
+        {
+          "jet": 5,
+          "texte": ""
+        },
+        {
+          "jet": 6,
+          "texte": ""
+        }
+      ]
+    },
+    "objet_magique": {
+      "titre": "",
+      "de": "1d6",
+      "entrees": [
+        {
+          "jet": 1,
+          "texte": "",
+          "nom": ""
+        },
+        {
+          "jet": 2,
+          "texte": "",
+          "nom": ""
+        },
+        {
+          "jet": 3,
+          "texte": "",
+          "nom": ""
+        },
+        {
+          "jet": 4,
+          "texte": "",
+          "nom": ""
+        },
+        {
+          "jet": 5,
+          "texte": "",
+          "nom": ""
+        },
+        {
+          "jet": 6,
+          "texte": "",
+          "nom": ""
+        }
+      ]
+    },
+    "autres_objets": {
+      "titre": "",
+      "de": "1d6",
+      "colonnes": {
+        "arme": {
+          "titre": "",
+          "entrees": [
+            {
+              "jet": 1,
+              "texte": "",
+              "nom": ""
+            },
+            {
+              "jet": 2,
+              "texte": "",
+              "nom": ""
+            },
+            {
+              "jet": 3,
+              "texte": "",
+              "nom": ""
+            },
+            {
+              "jet": 4,
+              "texte": "",
+              "nom": ""
+            },
+            {
+              "jet": 5,
+              "texte": "",
+              "nom": ""
+            },
+            {
+              "jet": 6,
+              "texte": "",
+              "nom": ""
+            }
+          ]
+        },
+        "armure": {
+          "titre": "",
+          "entrees": [
+            {
+              "jet": 1,
+              "texte": "",
+              "nom": "",
+              "pv": 0
+            },
+            {
+              "jet": 2,
+              "texte": "",
+              "nom": "",
+              "pv": 0
+            },
+            {
+              "jet": 3,
+              "texte": "",
+              "nom": "",
+              "pv": 0
+            },
+            {
+              "jet": 4,
+              "texte": "",
+              "nom": "",
+              "pv": 0
+            },
+            {
+              "jet": 5,
+              "texte": "",
+              "nom": "",
+              "pv": 0
+            },
+            {
+              "jet": 6,
+              "texte": "",
+              "nom": "",
+              "pv": 0
+            }
+          ]
+        },
+        "objet_merveilleux": {
+          "titre": "",
+          "entrees": [
+            {
+              "jet": 1,
+              "texte": "",
+              "nom": ""
+            },
+            {
+              "jet": 2,
+              "texte": "",
+              "nom": ""
+            },
+            {
+              "jet": 3,
+              "texte": "",
+              "nom": ""
+            },
+            {
+              "jet": 4,
+              "texte": "",
+              "nom": ""
+            },
+            {
+              "jet": 5,
+              "texte": "",
+              "nom": ""
+            },
+            {
+              "jet": 6,
+              "texte": "",
+              "nom": ""
+            }
+          ]
+        }
+      }
+    }
+  }
+}
