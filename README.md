@@ -27,3 +27,5 @@ est fourni : [tables-modele.json](tables-modele.json).
 
 NoteQuest est un jeu de Tiago Junges (coisinhaverde.com.br), traduit en français par Caelgrim.
 Ce carnet est un projet personnel non officiel. Dessin à la main : [Rough.js](https://roughjs.com) (licence MIT, `js/rough.LICENSE.txt`).
+Export PDF : [jsPDF](https://github.com/parallax/jsPDF) (licence MIT, `js/vendor/jspdf.LICENSE.txt`) et la police IM Fell English d'Igino Marini (SIL Open Font License, `fonts/OFL.txt`).
+Texture de parchemin (`images/parchemin.jpg`) : générée pour ce projet, libre de droits.

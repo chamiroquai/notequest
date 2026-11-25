@@ -36,7 +36,12 @@ export async function exporter() {
   const donnees = { format: 'notequest-partie', version: VERSION_PARTIE, date: new Date().toISOString(), partie };
   const texte = JSON.stringify(donnees, null, 2);
   const nom = `notequest-partie-${new Date().toISOString().slice(0, 10)}.json`;
-  const fichier = new File([texte], nom, { type: 'application/json' });
+  return partager(new File([texte], nom, { type: 'application/json' }));
+}
+
+// Propose le fichier via la feuille de partage d'iOS (Enregistrer dans Fichiers…), sinon le télécharge.
+export async function partager(fichier) {
+  const nom = fichier.name;
   if (navigator.canShare && navigator.canShare({ files: [fichier] })) {
     try { await navigator.share({ files: [fichier], title: nom }); return true; } catch (e) { if (e.name === 'AbortError') return false; }
   }

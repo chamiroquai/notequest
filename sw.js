@@ -1,9 +1,9 @@
 // Service worker : garde l'application en cache pour jouer hors ligne.
 // Pensez à changer VERSION à chaque mise à jour publiée.
-const VERSION = 'notequest-v4';
+const VERSION = 'notequest-v5';
 const FICHIERS = [
   './', 'index.html', 'css/style.css', 'manifest.webmanifest',
-  'js/app.js', 'js/ui.js', 'js/des.js', 'js/tables.js', 'js/etat.js', 'js/carte.js', 'js/rough.esm.js',
+  'js/app.js', 'js/export-pdf.js', 'js/vendor/jspdf.umd.min.js', 'fonts/IMFellEnglish-Regular.ttf', 'fonts/IMFellEnglish-Italic.ttf', 'images/parchemin.jpg', 'js/ui.js', 'js/des.js', 'js/tables.js', 'js/etat.js', 'js/carte.js', 'js/rough.esm.js',
   'tables-modele.json', 'icons/icon-180.png', 'icons/icon-192.png', 'icons/icon-512.png',
 ];
 

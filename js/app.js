@@ -1,6 +1,6 @@
 // NoteQuest – carnet de donjon. L'application tient le carnet, dessine la carte et lit vos tables ;
 // c'est toujours vous qui décidez et qui lancez (ou faites lancer) les dés.
-import { h, choisir, informer, demanderTexte, ouvrirFenetre } from './ui.js';
+import { h, choisir, informer, demanderTexte, ouvrirFenetre, fermerFenetre } from './ui.js';
 import { jet, lireFormule } from './des.js';
 import * as T from './tables.js';
 import * as E from './etat.js';
@@ -179,6 +179,7 @@ async function mortAventurier() {
   const seg = d && d.segments.find((s) => s.id === d.actuel);
   if (seg) { seg.depouille = { nom: p.nom, sac: p.sac.map((o) => o.nom), armures: p.armures.map((a) => a.nom), arme: p.arme, pieces: p.pieces }; }
   p.mort = true;
+  if (seg) p.mortDans = seg.num;
   E.noter('evenement', `${p.nom} est mort${seg ? ` dans le segment ${seg.num}` : ''}.`);
   apresChangement();
 }
@@ -652,9 +653,29 @@ function rendreSegment() {
   o.append(h('h3', {}, 'Donjon'), h('button', { class: 'bouton', onclick: nouveauDonjon }, 'Nouveau donjon'));
 }
 
+async function exporterJournalPDF() {
+  const avecNotes = P().journal.some((j) => j.genre === 'note') || (P().donjon?.segments || []).some((s) => s.notes);
+  const choix = await choisir({ titre: 'Exporter le journal en PDF', texte: 'Le PDF reprend le nom du donjon, les aventuriers successifs et le journal, sur fond de parchemin.', options: [
+    { label: 'Avec le récit', valeur: 'avec', classe: 'principal', detail: avecNotes ? 'jets, événements et vos notes' : 'aucune note de récit pour l\'instant' },
+    { label: 'Sans le récit', valeur: 'sans', detail: 'seulement les jets et les événements' },
+  ] });
+  if (!choix) return;
+  ouvrirFenetre((c) => c.append(h('h2', {}, 'Préparation du PDF…'), h('p', { class: 'petit' }, 'Quelques secondes.')), { fermableFond: false });
+  try {
+    const { journalEnPDF } = await import('./export-pdf.js');
+    const fichier = await journalEnPDF(P(), { recit: choix === 'avec' });
+    fermerFenetre();
+    await E.partager(fichier);
+  } catch (e) {
+    fermerFenetre();
+    informer('Export impossible', e.message || String(e));
+  }
+}
+
 function rendreJournal() {
   const o = $('#onglet-journal'); o.innerHTML = '';
-  o.append(h('h2', {}, 'Journal'));
+  o.append(h('div', { class: 'ligne' }, h('h2', { style: 'flex:1' }, 'Journal'),
+    h('button', { class: 'bouton', onclick: exporterJournalPDF }, '📄 Exporter en PDF')));
   const zone = h('textarea', { placeholder: 'Écrire une note ou un passage de récit (facultatif)…' });
   o.append(zone, h('div', { class: 'ligne' },
     h('button', { class: 'bouton principal', onclick: () => { if (zone.value.trim()) { E.noter('note', zone.value.trim()); rendreJournal(); } } }, 'Ajouter au journal'),
