@@ -1,6 +1,6 @@
 // Service worker : garde l'application en cache pour jouer hors ligne.
 // Pensez à changer VERSION à chaque mise à jour publiée.
-const VERSION = 'notequest-v2';
+const VERSION = 'notequest-v3';
 const FICHIERS = [
   './', 'index.html', 'css/style.css', 'manifest.webmanifest',
   'js/app.js', 'js/ui.js', 'js/des.js', 'js/tables.js', 'js/etat.js', 'js/carte.js', 'js/rough.esm.js',

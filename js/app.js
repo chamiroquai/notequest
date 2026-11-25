@@ -4,7 +4,7 @@ import { h, choisir, informer, demanderTexte, ouvrirFenetre } from './ui.js';
 import { jet, lireFormule } from './des.js';
 import * as T from './tables.js';
 import * as E from './etat.js';
-import { dessiner, activerNavigation, placer, positionsPortes, positionPorteSecrete, specParDefaut } from './carte.js';
+import { DIR, emplacementsLibres, dessiner, activerNavigation, placer, positionsPortes, positionPorteSecrete, specParDefaut } from './carte.js';
 
 const $ = (s) => document.querySelector(s);
 const P = () => E.partie;
@@ -184,12 +184,29 @@ function creerPorte(d, a, pos, extra = {}) {
 // Ajoute un segment derrière une porte et crée ses portes.
 function ajouterDerriere(d, porte, specBrute, { texte, niveau } = {}) {
   const spec = specParDefaut(specBrute);
-  const pl = placer(d.segments.concat(d.reserve || []), porte, spec);
-  const s = creerSegment(d, spec, pl.rect, { dir: porte.cote, niveau, texte, chevauche: pl.chevauche });
+  const obstacles = d.segments.concat(d.reserve || []);
+  for (const sg of d.segments) for (const q of sg.passage || []) obstacles.push({ x: q.x, y: q.y, w: 1, h: 1 });
+  // Évite de boucher les portes pas encore ouvertes.
+  const souples = d.portes.filter((q) => !q.b && q !== porte).map((q) => ({ x: q.cx + DIR[q.cote].dx, y: q.cy + DIR[q.cote].dy, w: 1, h: 1 }));
+  let pl = placer(obstacles, porte, spec, souples);
+  // Pas de place derrière cette porte : on la déplace ailleurs sur le mur de son segment
+  // (elle n'était pas encore ouverte, sa position exacte ne change rien au jeu).
+  const proprio = segment(porte.a);
+  if (pl.chevauche && proprio) {
+    const origine = { cx: porte.cx, cy: porte.cy, cote: porte.cote };
+    for (const pos of emplacementsLibres(proprio, porte, d.portes, obstacles)) {
+      Object.assign(porte, pos);
+      const essai = placer(obstacles, porte, spec, souples);
+      if (!essai.chevauche) { pl = essai; break; }
+    }
+    if (pl.chevauche) Object.assign(porte, origine);
+  }
+  const s = creerSegment(d, spec, pl.rect, { dir: pl.dir, niveau, texte, chevauche: pl.chevauche });
+  s.passage = pl.passage;
   porte.b = s.id;
-  for (const pos of positionsPortes(pl.rect, porte.cote, pl.longueur, pl.largeur, spec.portes, spec.fond)) creerPorte(d, s.id, pos);
+  for (const pos of positionsPortes(pl.rect, pl.dir, pl.longueur, pl.largeur, spec.portes, spec.fond)) creerPorte(d, s.id, pos);
   if (spec.suite) {
-    const fond = d.portes.filter((p) => p.a === s.id).find((p) => p.cote === porte.cote) || creerPorte(d, s.id, { ...positionsPortes(pl.rect, porte.cote, pl.longueur, pl.largeur, 1, true)[0] });
+    const fond = d.portes.filter((p) => p.a === s.id).find((p) => p.cote === pl.dir) || creerPorte(d, s.id, { ...positionsPortes(pl.rect, pl.dir, pl.longueur, pl.largeur, 1, true)[0] });
     fond.etat = 'ouverte';
     const n2 = specParDefaut(spec.suite).genre === 'escalier' ? niveau + 1 : niveau;
     ajouterDerriere(d, fond, spec.suite, { texte: '', niveau: n2 });

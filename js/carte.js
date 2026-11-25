@@ -37,24 +37,68 @@ function rectDepuis(o, d, L, W, k) {
 }
 
 // Cherche une position libre pour un nouveau segment derrière une porte.
-// Renvoie { rect, longueur, largeur, chevauche }.
-export function placer(segments, porte, spec) {
+//  obstacles : rectangles déjà occupés (segments, passages, réserve)
+//  souples   : cases qu'on évite si possible (devant les portes encore fermées)
+// Ordre des essais : collé à la porte ; sinon relié par un petit passage (sans changer
+// la taille de la salle) ; en tout dernier recours seulement, superposé en pointillés.
+// Renvoie { rect, longueur, largeur, dir, passage: [{x,y}], chevauche }.
+export function placer(obstacles, porte, spec, souples = []) {
   const d = porte.cote;
   const o = { x: porte.cx + DIR[d].dx, y: porte.cy + DIR[d].dy };
-  const essais = [[spec.longueur, spec.largeur]];
-  if (spec.genre === 'piece' && spec.longueur !== spec.largeur) essais.push([spec.largeur, spec.longueur]);
-  if (spec.genre === 'couloir') for (let L = spec.longueur - 1; L >= 2; L--) essais.push([L, spec.largeur]);
-  for (const [L, W] of essais) {
-    const centre = Math.floor((W - 1) / 2);
-    const ks = [centre];
-    for (let i = 1; i < W; i++) { ks.push(centre - i, centre + i); }
-    for (const k of ks.filter((k) => k >= 0 && k < W)) {
-      const r = rectDepuis(o, d, L, W, k);
-      if (!segments.some((s) => chevauche(r, s))) return { rect: r, longueur: L, largeur: W, chevauche: false };
+  const formes = [[spec.longueur, spec.largeur]];
+  if (spec.genre !== 'couloir' && spec.longueur !== spec.largeur) formes.push([spec.largeur, spec.longueur]);
+  const formesCouloir = spec.genre === 'couloir' ? [[Math.max(3, spec.longueur - 2), spec.largeur], [3, spec.largeur]] : [];
+  const libre = (r, bloc) => !bloc.some((b) => chevauche(r, b));
+
+  const autour = (entree, dir, liste, bloc) => {
+    for (const [L, W] of liste) {
+      const centre = Math.floor((W - 1) / 2);
+      const ks = [centre];
+      for (let i = 1; i < W; i++) ks.push(centre - i, centre + i);
+      for (const k of ks.filter((k) => k >= 0 && k < W)) {
+        const r = rectDepuis(entree, dir, L, W, k);
+        if (libre(r, bloc)) return { rect: r, longueur: L, largeur: W };
+      }
+    }
+    return null;
+  };
+
+  for (const bloc of [obstacles.concat(souples), obstacles]) {
+    // 1. Collé à la porte (taille exacte, puis couloir raccourci).
+    let r = autour(o, d, formes, bloc) || (formesCouloir.length && autour(o, d, formesCouloir, bloc));
+    if (r) return { ...r, dir: d, passage: [], chevauche: false };
+    // 2. Relié par un passage : recherche en largeur des cases libres autour de la porte.
+    if (!libre({ x: o.x, y: o.y, w: 1, h: 1 }, bloc)) continue;
+    const parent = new Map([[`${o.x},${o.y}`, null]]);
+    const file = [{ ...o, dist: 0 }];
+    while (file.length) {
+      const c = file.shift();
+      if (c.dist > 14) break;
+      const chemin = [];
+      for (let k = `${c.x},${c.y}`; k; k = parent.get(k)) { const [x, y] = k.split(',').map(Number); chemin.unshift({ x, y }); }
+      const blocChemin = bloc.concat(chemin.map((q) => ({ x: q.x, y: q.y, w: 1, h: 1 })));
+      if (c.dist > 0) {
+        const precedent = chemin[chemin.length - 2];
+        const dirs = [d, ...Object.keys(DIR).filter((x) => x !== d)];
+        for (const dir of dirs) {
+          const e = { x: c.x + DIR[dir].dx, y: c.y + DIR[dir].dy };
+          if (precedent && e.x === precedent.x && e.y === precedent.y) continue;
+          const res = autour(e, dir, formes, blocChemin);
+          if (res) return { ...res, dir, passage: chemin, chevauche: false };
+        }
+      }
+      for (const dir of [d, ...Object.keys(DIR).filter((x) => x !== d)]) {
+        const n = { x: c.x + DIR[dir].dx, y: c.y + DIR[dir].dy };
+        const cle = `${n.x},${n.y}`;
+        if (parent.has(cle) || !libre({ x: n.x, y: n.y, w: 1, h: 1 }, bloc)) continue;
+        // Garde un écart d'une case avec les autres segments pour que le passage reste lisible.
+        parent.set(cle, `${c.x},${c.y}`);
+        file.push({ ...n, dist: c.dist + 1 });
+      }
     }
   }
-  const [L, W] = essais[0];
-  return { rect: rectDepuis(o, d, L, W, Math.floor((W - 1) / 2)), longueur: L, largeur: W, chevauche: true };
+  const [L, W] = formes[0];
+  return { rect: rectDepuis(o, d, L, W, Math.floor((W - 1) / 2)), longueur: L, largeur: W, dir: d, passage: [], chevauche: true };
 }
 
 // Case (t = profondeur depuis l'entrée, u = position en travers) → case de la grille.
@@ -102,6 +146,20 @@ export function positionPorteSecrete(seg, portes, segments) {
   return libres[Math.floor(libres.length / 2)] || candidats[0];
 }
 
+// Autres emplacements possibles pour une porte pas encore ouverte (case extérieure libre),
+// du plus proche au plus éloigné de sa place actuelle.
+export function emplacementsLibres(seg, porte, portes, obstacles) {
+  const prises = new Set(portes.filter((p) => p !== porte && (p.a === seg.id || p.b === seg.id)).map((p) => `${p.cx},${p.cy},${p.cote}`));
+  const candidats = [];
+  for (let x = seg.x; x < seg.x + seg.w; x++) { candidats.push({ cx: x, cy: seg.y, cote: 'N' }, { cx: x, cy: seg.y + seg.h - 1, cote: 'S' }); }
+  for (let y = seg.y; y < seg.y + seg.h; y++) { candidats.push({ cx: seg.x, cy: y, cote: 'W' }, { cx: seg.x + seg.w - 1, cy: y, cote: 'E' }); }
+  return candidats.filter((c) => {
+    if (prises.has(`${c.cx},${c.cy},${c.cote}`)) return false;
+    const o = { x: c.cx + DIR[c.cote].dx, y: c.cy + DIR[c.cote].dy, w: 1, h: 1 };
+    return !obstacles.some((s) => chevauche(o, s));
+  }).sort((a, b) => (Math.abs(a.cx - porte.cx) + Math.abs(a.cy - porte.cy) + (a.cote === porte.cote ? 0 : 2)) - (Math.abs(b.cx - porte.cx) + Math.abs(b.cy - porte.cy) + (b.cote === porte.cote ? 0 : 2)));
+}
+
 // ---------- Dessin ----------
 
 const NS = 'http://www.w3.org/2000/svg';
@@ -122,6 +180,11 @@ export function dessiner(svg, donjon) {
   const calqueTextes = el('g', {}, monde);
   const calqueClic = el('g', {}, monde);
 
+  for (const s of donjon.segments) {
+    for (const [i, q] of (s.passage || []).entries()) {
+      calqueSeg.append(rc.rectangle(q.x * C + 4, q.y * C + 4, C - 8, C - 8, { stroke: ENCRE, strokeWidth: 1.2, roughness: 1.5, fill: '#efe6cf', fillStyle: 'solid', seed: s.num * 13 + i }));
+    }
+  }
   for (const s of donjon.segments) {
     const seed = s.num * 97 + 13;
     const X = s.x * C, Y = s.y * C, Wp = s.w * C, Hp = s.h * C;
@@ -189,7 +252,12 @@ export function dessiner(svg, donjon) {
     t.textContent = 'Entrée';
   }
 
-  for (const p of donjon.portes) {
+  // Ouvertures là où un passage rejoint son segment.
+  const jonctions = donjon.segments.filter((s) => s.passage && s.passage.length).map((s) => {
+    const q = s.passage[s.passage.length - 1];
+    return { id: null, num: 900 + s.num, cx: q.x, cy: q.y, cote: s.dir, etat: 'ouverte' };
+  });
+  for (const p of donjon.portes.concat(jonctions)) {
     const seed = p.num * 31 + 7;
     const { px, py, horiz } = positionPorte(p);
     const lw = horiz ? C - 8 : 8, lh = horiz ? 8 : C - 8;
@@ -208,7 +276,7 @@ export function dessiner(svg, donjon) {
       calquePortes.append(rc.rectangle(x0, y0, lw, lh, { ...base, stroke: ACCENT, fill: '#e9b8a6', fillStyle: 'solid', strokeWidth: 2.5 }));
     }
     if (p.secrete) { const t = el('text', { x: px + (horiz ? 0 : 10), y: py + (horiz ? -7 : 4), 'font-size': 10, fill: ACCENT, 'text-anchor': 'middle' }, calqueTextes); t.textContent = 'S'; }
-    el('rect', { x: px - C * 0.6, y: py - C * 0.6, width: C * 1.2, height: C * 1.2, fill: 'transparent', 'data-porte': p.id }, calqueClic);
+    if (p.id) el('rect', { x: px - C * 0.6, y: py - C * 0.6, width: C * 1.2, height: C * 1.2, fill: 'transparent', 'data-porte': p.id }, calqueClic);
   }
   return monde;
 }
