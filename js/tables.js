@@ -34,6 +34,8 @@ export function toutesLesTables() { return tables ? tables.tables : {}; }
 export function table(id) { return tables && tables.tables ? tables.tables[id] : null; }
 export function nomFichierTables() { return tables ? (tables.description || tables.titre || 'fichier importé') : ''; }
 
+export function memo() { return tables && tables.memo && Array.isArray(tables.memo.sections) ? tables.memo : null; }
+
 export function oublierTables() { localStorage.removeItem(CLE); tables = null; }
 
 // Vérifie un fichier et renvoie { ok, erreurs[], avertissements[] }.

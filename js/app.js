@@ -40,7 +40,7 @@ function changerOnglet(nom) {
   if (nom === 'carte' && estLarge()) nom = 'segment';
   onglet = nom;
   document.body.classList.toggle('voir-carte', nom === 'carte');
-  for (const id of ['perso', 'segment', 'journal', 'plus']) $('#onglet-' + id).hidden = id !== nom;
+  for (const id of ['perso', 'segment', 'journal', 'regles', 'plus']) $('#onglet-' + id).hidden = id !== nom;
   document.querySelectorAll('#barre button').forEach((b) => b.classList.toggle('actif', b.dataset.onglet === nom));
   if (nom === 'carte') requestAnimationFrame(() => nav.appliquer());
   rendrePanneau();
@@ -481,6 +481,7 @@ function rendrePanneau() {
   if (onglet === 'perso') rendrePerso();
   if (onglet === 'segment') rendreSegment();
   if (onglet === 'journal') rendreJournal();
+  if (onglet === 'regles') rendreRegles();
   if (onglet === 'plus') rendrePlus();
 }
 
@@ -623,6 +624,34 @@ function rendreJournal() {
       h('div', { class: 'texte' }, j.texte)));
   }
   if (!entrees.length) o.append(h('p', { class: 'petit' }, 'Le journal se remplit tout seul avec vos jets et vos découvertes.'));
+}
+
+function rendreRegles() {
+  const o = $('#onglet-regles'); o.innerHTML = '';
+  const m = T.memo();
+  o.append(h('h2', {}, (m && m.titre) || 'Mémo des règles'));
+  const sections = m ? m.sections.filter((s) => s.titre || (s.points || []).some(Boolean)) : [];
+  if (!sections.length) {
+    o.append(h('p', {}, 'Aucun mémo dans votre fichier de tables.'),
+      h('p', { class: 'petit' }, 'Ajoutez une rubrique « memo » à votre fichier (voir le format des tables), puis importez-le à nouveau depuis l\'onglet Plus.'));
+    return;
+  }
+  const champ = h('input', { type: 'search', placeholder: 'Chercher dans le mémo (ex. torche, poison)…' });
+  const zone = h('div');
+  const afficher = () => {
+    const q = champ.value.trim().toLowerCase();
+    zone.innerHTML = '';
+    for (const s of sections) {
+      const points = (s.points || []).filter((p) => p && (!q || p.toLowerCase().includes(q) || (s.titre || '').toLowerCase().includes(q)));
+      if (q && !points.length) continue;
+      const d = h('details', { class: 'memo', open: !!q }, h('summary', {}, s.titre || 'Sans titre'), h('ul', {}, points.map((p) => h('li', {}, p))));
+      zone.append(d);
+    }
+    if (!zone.children.length) zone.append(h('p', { class: 'petit' }, 'Rien trouvé.'));
+  };
+  champ.oninput = afficher;
+  o.append(h('label', { class: 'champ' }, champ), zone);
+  afficher();
 }
 
 function rendrePlus() {

@@ -2,6 +2,17 @@
   "format": "notequest-tables",
   "version": 1,
   "description": "Modèle vide à remplir avec les tables de votre livret",
+  "memo": {
+    "titre": "",
+    "sections": [
+      {
+        "titre": "",
+        "points": [
+          ""
+        ]
+      }
+    ]
+  },
   "tables": {
     "races": {
       "titre": "",

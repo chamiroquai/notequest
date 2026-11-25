@@ -88,6 +88,21 @@ l'application vous **propose** la salle finale ; vous pouvez aussi lancer la tab
 
 `nombre` est un chiffre ou une formule de dés : dans ce cas, l'application vous demande de lancer.
 
+## Mémo des règles (facultatif)
+
+L'onglet **Règles** affiche le mémo rangé dans votre fichier, à côté de `tables` :
+
+```json
+"memo": {
+  "titre": "Mémo des règles",
+  "sections": [
+    { "titre": "Combat", "points": [ "Première règle à retenir…", "Deuxième…" ] }
+  ]
+}
+```
+
+Chaque section se replie, et un champ de recherche filtre les points.
+
 ## Conseils pour iPad et iPhone
 
 - Éditez le fichier avec une app de texte (Textastic, Runestone, ou Notes puis « Enregistrer dans Fichiers »),

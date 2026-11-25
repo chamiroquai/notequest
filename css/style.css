@@ -112,3 +112,10 @@ textarea { min-height: 80px; resize: vertical; }
 .etiquette { display: inline-block; font-size: 12px; padding: 2px 6px; border: 1px solid var(--encre-douce); border-radius: 6px; margin-right: 4px; color: var(--encre-douce); }
 .monstre { border: 1.5px solid var(--encre); border-radius: 8px; padding: 8px; margin: 6px 0; background: #fffdf6; }
 .monstre.mort { opacity: .45; }
+
+/* Mémo des règles */
+details.memo { border: 1.5px solid var(--encre); border-radius: 8px 12px 9px 11px; background: #fffdf6; margin: 8px 0; padding: 0 12px; }
+details.memo summary { font-family: var(--main); font-size: 18px; padding: 10px 0; cursor: pointer; }
+details.memo ul { margin: 0 0 10px; padding-left: 20px; }
+details.memo li { margin: 6px 0; line-height: 1.4; }
+#barre button span { white-space: nowrap; }
