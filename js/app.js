@@ -49,6 +49,28 @@ function changerOnglet(nom) {
 function rendreTout() { rendreEntete(); rendreCarte(); rendrePanneau(); }
 function apresChangement() { E.sauver(); rendreTout(); }
 
+// ---------------------------------------------------------------- Règles en contexte
+
+// Encadré repliable avec les règles utiles au moment présent (vide si le mémo n'en a pas).
+function regleEnLigne(contexte, ouvert = false) {
+  const sections = T.reglesPour(contexte);
+  if (!sections.length) return null;
+  return h('div', {}, sections.map((s) => h('details', { class: 'memo regle', open: ouvert || undefined },
+    h('summary', {}, '📖 ' + (s.titre || 'Règle')), h('ul', {}, (s.points || []).filter(Boolean).map((p) => h('li', {}, p))))));
+}
+
+function avecRegle(texte, contexte) {
+  return h('div', {}, texte ? h('div', { class: 'carte-texte' }, texte) : null, regleEnLigne(contexte));
+}
+
+// Toute la table, pour la consulter sans ouvrir le livret.
+function tableComplete(id, colonne, ouvert = false) {
+  const entrees = T.entreesDe(id, colonne);
+  if (!entrees || !entrees.length) return null;
+  return h('details', { class: 'memo regle', open: ouvert || undefined }, h('summary', {}, '📋 Voir toute la table'),
+    h('table', { class: 'table-jeu' }, entrees.map((e) => h('tr', {}, h('td', { class: 'jet' }, String(e.jet)), h('td', {}, T.texteEntree(e) || '—')))));
+}
+
 // ---------------------------------------------------------------- Jets sur les tables
 
 function apercuEntree(id, colonne) {
@@ -65,7 +87,7 @@ async function jetTable(id, colonne, { explication } = {}) {
   if (!t) { await informer('Table absente', `Votre fichier de tables ne contient pas la table « ${id} ». Ajoutez-la puis importez le fichier à nouveau (onglet Plus).`); return null; }
   if (t.colonnes && !t.colonnes[colonne]) { await informer('Colonne absente', `La table « ${id} » n'a pas de colonne « ${colonne} ».`); return null; }
   const titre = T.titreTable(id, colonne);
-  const r = await jet({ titre, formule: t.de, apercu: apercuEntree(id, colonne), explication });
+  const r = await jet({ titre, formule: t.de, apercu: apercuEntree(id, colonne), explication, annexe: tableComplete(id, colonne) });
   if (!r) return null;
   const entree = T.chercher(id, r.somme, colonne);
   E.noter('jet', `${titre} : ${r.des.join('+')}${r.des.length > 1 ? ' = ' + r.somme : ''} (${r.mode}) → ${entree ? T.texteEntree(entree) : 'aucune entrée'}`);
@@ -292,7 +314,7 @@ async function ouvrirPorte(p) {
     if (!r) return;
     const e = r.entree || {};
     if (e.fermee) {
-      const v = await choisir({ titre: 'Porte fermée', texte: T.texteEntree(e), options: [
+      const v = await choisir({ titre: 'Porte fermée', texte: avecRegle(T.texteEntree(e), 'porte'), options: [
         { label: 'Utiliser une clé', valeur: 'cle', detail: P().perso ? `${P().perso.cles || 0} clé(s) notée(s)` : '' },
         { label: 'Crocheter la serrure (−1 torche)', valeur: 'crocheter' },
         { label: 'Casser la porte', valeur: 'casser', detail: 'alerte les monstres du segment' },
@@ -306,7 +328,7 @@ async function ouvrirPorte(p) {
       if (v === 'sort') E.noter('evenement', `Porte ${p.num} ouverte par un sort ou une capacité.`);
     }
     if (e.piege) {
-      const v = await choisir({ titre: 'Piège possible', texte: T.texteEntree(e), options: [
+      const v = await choisir({ titre: 'Piège possible', texte: avecRegle(T.texteEntree(e), 'piege'), options: [
         { label: 'Désamorcer (−1 torche)', valeur: 'desamorcer' },
         { label: 'Lancer le dé de piège', valeur: 'lancer', classe: 'principal' },
       ], annuler: 'Je gère moi-même' });
@@ -317,7 +339,7 @@ async function ouvrirPorte(p) {
   // 2. Ce qu'il y a derrière
   let spec = null, texte = '', niveau = depuis ? depuis.niveau : 1;
   if (depuis && depuis.genre === 'escalier' && depuis.niveau >= 3 && !d.salleFinale) {
-    const v = await choisir({ titre: `Niveau ${depuis.niveau}`, texte: 'Vous entrez dans le troisième niveau : selon les règles, c\'est la salle finale du boss.', options: [
+    const v = await choisir({ titre: `Niveau ${depuis.niveau}`, texte: avecRegle('Vous entrez dans le troisième niveau : selon les règles, c\'est la salle finale du boss.', 'salle_finale'), options: [
       { label: 'Placer la salle finale', valeur: 'finale', classe: 'principal' },
       { label: 'Lancer la table des segments quand même', valeur: 'table' },
     ], annuler: null });
@@ -400,7 +422,7 @@ async function ajouterMonstreManuel(seg) {
 }
 
 async function chercherPassage(seg) {
-  const ok = await choisir({ titre: 'Passage secret', texte: 'Chercher un passage secret coûte 1 torche.', options: [{ label: 'Chercher (−1 torche)', valeur: true, classe: 'principal' }] });
+  const ok = await choisir({ titre: 'Passage secret', texte: avecRegle('Chercher un passage secret coûte 1 torche.', 'passage_secret'), options: [{ label: 'Chercher (−1 torche)', valeur: true, classe: 'principal' }] });
   if (!ok) return;
   depenserTorche('recherche de passage secret');
   const r = await jetTable('passage_secret');
@@ -549,7 +571,7 @@ function rendrePerso() {
     h('button', { class: 'mini', onclick: () => { p.armures.splice(i, 1); apresChangement(); } }, '✕')))),
   h('button', { class: 'bouton', onclick: () => ajouterObjet('armures') }, '+ Armure'));
 
-  o.append(h('h3', {}, 'En ville'), h('p', { class: 'petit' }, 'Chaque service coûte 1 pièce.'),
+  o.append(h('h3', {}, 'En ville'), h('p', { class: 'petit' }, 'Chaque service coûte 1 pièce.'), regleEnLigne('ville'),
     h('button', { class: 'bouton', onclick: () => actionVille('marchand') }, 'Marchand : +1 torche'),
     h('button', { class: 'bouton', onclick: () => actionVille('pretre') }, 'Prêtre : PV et sorts'),
     h('button', { class: 'bouton', onclick: () => actionVille('forgeron') }, 'Forgeron : armure'));
@@ -593,12 +615,15 @@ function rendreSegment() {
   actions.append(h('button', { class: 'bouton', onclick: () => lancerEtProposer('tresor') }, '🎲 Trésor'));
   o.append(actions);
 
-  o.append(h('h3', {}, 'Monstres et combat'));
+  o.append(h('h3', {}, 'Monstres et combat'), regleEnLigne('combat'));
   if (!seg.monstres.length) o.append(h('p', { class: 'petit' }, 'Aucun monstre noté.'));
   for (const m of seg.monstres) {
     o.append(h('div', { class: 'monstre' + (m.pv <= 0 ? ' mort' : '') },
       h('div', { class: 'ligne' }, h('b', { style: 'flex:1' }, m.nom), h('span', { class: 'petit' }, `Dégâts ${m.degats}`)),
-      m.capacites ? h('div', { class: 'petit' }, m.capacites) : null,
+      m.capacites ? (() => {
+        const ex = T.expliquerCapacites(m.capacites);
+        return ex.length ? h('ul', { class: 'capacites' }, ex.map((x) => h('li', {}, x))) : h('div', { class: 'petit' }, m.capacites);
+      })() : null,
       h('div', { class: 'ligne' },
         h('button', { class: 'mini', onclick: () => { m.pv = Math.max(0, m.pv - 1); apresChangement(); } }, '−1'),
         h('button', { class: 'mini', onclick: async () => { const v = parseInt(await demanderTexte({ titre: `Dégâts infligés à ${m.nom}`, libelle: 'Nombre' }), 10); if (v) { m.pv = Math.max(0, m.pv - v); E.noter('evenement', `${m.nom} subit ${v} dégâts (${m.pv} PV).`); apresChangement(); } } }, '−…'),
@@ -611,7 +636,7 @@ function rendreSegment() {
     seg.monstres.length ? h('button', { class: 'bouton', onclick: async () => { const ok = await choisir({ titre: 'Fin du combat', texte: 'À la fin d\'un combat, une torche est consommée.', options: [{ label: 'Fin du combat (−1 torche)', valeur: true, classe: 'principal' }] }); if (ok) { depenserTorche('fin du combat'); E.noter('evenement', `Combat terminé dans le segment ${seg.num}.`); apresChangement(); } } }, 'Fin du combat (−1 torche)') : null,
     seg.monstres.some((m) => m.pv <= 0) ? h('button', { class: 'bouton', onclick: () => lancerEtProposer('tresor') }, '🎲 Butin / trésor') : null));
 
-  o.append(h('h3', {}, 'Portes'));
+  o.append(h('h3', {}, 'Portes'), regleEnLigne('porte'));
   const portes = d.portes.filter((p) => p.a === seg.id || p.b === seg.id);
   o.append(h('ul', { class: 'liste' }, portes.map((p) => {
     const autre = p.a === seg.id ? segment(p.b) : segment(p.a);
@@ -643,6 +668,8 @@ function rendreJournal() {
   if (!entrees.length) o.append(h('p', { class: 'petit' }, 'Le journal se remplit tout seul avec vos jets et vos découvertes.'));
 }
 
+const sansAccents = (t) => String(t || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
+
 function rendreRegles() {
   const o = $('#onglet-regles'); o.innerHTML = '';
   const m = T.memo();
@@ -651,23 +678,33 @@ function rendreRegles() {
   if (!sections.length) {
     o.append(h('p', {}, 'Aucun mémo dans votre fichier de tables.'),
       h('p', { class: 'petit' }, 'Ajoutez une rubrique « memo » à votre fichier (voir le format des tables), puis importez-le à nouveau depuis l\'onglet Plus.'));
-    return;
   }
-  const champ = h('input', { type: 'search', placeholder: 'Chercher dans le mémo (ex. torche, poison)…' });
+  const champ = h('input', { type: 'search', placeholder: 'Chercher dans le mémo et les tables (ex. torche, poison)…' });
   const zone = h('div');
+  const zoneTables = h('div');
   const afficher = () => {
     const q = champ.value.trim().toLowerCase();
     zone.innerHTML = '';
     for (const s of sections) {
-      const points = (s.points || []).filter((p) => p && (!q || p.toLowerCase().includes(q) || (s.titre || '').toLowerCase().includes(q)));
+      const points = (s.points || []).filter((p) => p && (!q || sansAccents(p).includes(sansAccents(q)) || sansAccents(s.titre).includes(sansAccents(q))));
       if (q && !points.length) continue;
       const d = h('details', { class: 'memo', open: !!q }, h('summary', {}, s.titre || 'Sans titre'), h('ul', {}, points.map((p) => h('li', {}, p))));
       zone.append(d);
     }
-    if (!zone.children.length) zone.append(h('p', { class: 'petit' }, 'Rien trouvé.'));
+    zoneTables.innerHTML = '';
+    for (const [id, t] of Object.entries(T.toutesLesTables())) {
+      for (const col of t.colonnes ? Object.keys(t.colonnes) : [null]) {
+        const titre = T.titreTable(id, col);
+        const entrees = (T.entreesDe(id, col) || []).filter((e) => !q || sansAccents(T.texteEntree(e)).includes(sansAccents(q)) || sansAccents(titre).includes(sansAccents(q)));
+        if (!entrees.length) continue;
+        zoneTables.append(h('details', { class: 'memo', open: !!q || undefined }, h('summary', {}, `${titre} (${t.de})`),
+          h('table', { class: 'table-jeu' }, entrees.map((e) => h('tr', {}, h('td', { class: 'jet' }, String(e.jet)), h('td', {}, T.texteEntree(e) || '—'))))));
+      }
+    }
+    if (!zone.children.length && !zoneTables.children.length) zone.append(h('p', { class: 'petit' }, 'Rien trouvé.'));
   };
   champ.oninput = afficher;
-  o.append(h('label', { class: 'champ' }, champ), zone);
+  o.append(h('label', { class: 'champ' }, champ), zone, h('h3', {}, 'Tables'), zoneTables);
   afficher();
 }
 

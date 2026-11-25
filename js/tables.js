@@ -36,6 +36,31 @@ export function nomFichierTables() { return tables ? (tables.description || tabl
 
 export function memo() { return tables && tables.memo && Array.isArray(tables.memo.sections) ? tables.memo : null; }
 
+const sansAccent = (t) => String(t || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().trim();
+
+// Sections du mémo liées à un moment du jeu (porte, combat, ville…).
+export function reglesPour(contexte) {
+  const m = memo();
+  return m ? m.sections.filter((s) => Array.isArray(s.contexte) && s.contexte.includes(contexte)) : [];
+}
+
+// Explications des capacités de monstres : points « Nom : explication » des sections « monstres ».
+export function expliquerCapacites(texte) {
+  const gloss = [];
+  for (const s of reglesPour('monstres')) for (const p of s.points || []) {
+    const i = p.indexOf(':');
+    if (i > 0) gloss.push({ cle: sansAccent(p.slice(0, i)), texte: p });
+  }
+  const res = [];
+  for (const brut of String(texte || '').split(/[;,]/)) {
+    const t = sansAccent(brut).replace(/\.$/, '').replace(/s$/, '');
+    if (!t) continue;
+    const g = gloss.find((x) => x.cle === t) || gloss.find((x) => x.cle.startsWith(t) || t.startsWith(x.cle));
+    if (g && !res.includes(g.texte)) res.push(g.texte);
+  }
+  return res;
+}
+
 export function oublierTables() { localStorage.removeItem(CLE); tables = null; }
 
 // Vérifie un fichier et renvoie { ok, erreurs[], avertissements[] }.

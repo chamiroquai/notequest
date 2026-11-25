@@ -26,7 +26,7 @@ export function calculer(f, des) {
 //  options.apercu(somme) : fonction facultative qui renvoie un nœud à afficher (résultat de table)
 //  options.explication : texte facultatif
 // Renvoie { des, somme, total, mode } ou null si annulé.
-export function jet({ titre, formule, apercu, explication }) {
+export function jet({ titre, formule, apercu, explication, annexe }) {
   const f = lireFormule(formule);
   if (!f) return Promise.resolve(null);
   return ouvrirFenetre((c, fermer) => {
@@ -75,6 +75,7 @@ export function jet({ titre, formule, apercu, explication }) {
       } }, '🎲 Lancer pour moi'),
       valider,
       h('button', { class: 'bouton', onclick: () => fermer(null) }, 'Annuler')));
+    if (annexe) c.append(annexe);
 
     function maj() {
       boutonsParDe.forEach((bs, i) => bs.forEach((b, j) => b.classList.toggle('choisi', des[i] === j + 1)));

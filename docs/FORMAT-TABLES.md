@@ -96,12 +96,17 @@ L'onglet **Règles** affiche le mémo rangé dans votre fichier, à côté de `t
 "memo": {
   "titre": "Mémo des règles",
   "sections": [
-    { "titre": "Combat", "points": [ "Première règle à retenir…", "Deuxième…" ] }
+    { "titre": "Combat", "contexte": ["combat"], "points": [ "Première règle à retenir…", "Deuxième…" ] }
   ]
 }
 ```
 
-Chaque section se replie, et un champ de recherche filtre les points.
+Chaque section se replie, et un champ de recherche filtre les points (et les tables).
+
+`contexte` (facultatif) affiche aussi la section au bon moment de la partie :
+`porte`, `piege`, `passage_secret`, `combat`, `ville`, `salle_finale`, `aventurier`, `torches`, `monstres`.
+Dans une section `monstres`, chaque point écrit « Nom : explication » sert de glossaire :
+l'explication s'affiche sous chaque monstre qui a cette capacité.
 
 ## Conseils pour iPad et iPhone
 

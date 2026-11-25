@@ -119,3 +119,11 @@ details.memo summary { font-family: var(--main); font-size: 18px; padding: 10px 
 details.memo ul { margin: 0 0 10px; padding-left: 20px; }
 details.memo li { margin: 6px 0; line-height: 1.4; }
 #barre button span { white-space: nowrap; }
+
+details.regle { margin: 6px 0; }
+details.regle summary { font-size: 15px; padding: 7px 0; }
+details.regle li { font-size: 14px; }
+.table-jeu { width: 100%; border-collapse: collapse; margin: 0 0 10px; font-size: 14px; }
+.table-jeu td { padding: 5px 4px; border-top: 1px dotted var(--encre-douce); vertical-align: top; line-height: 1.35; }
+.table-jeu td.jet { width: 44px; font-family: var(--main); font-size: 16px; text-align: center; white-space: nowrap; }
+ul.capacites { margin: 4px 0; padding-left: 18px; font-size: 13px; color: var(--encre-douce); }
